@@ -10,9 +10,12 @@ Programa creado para poner a prueba los conocimientos
 adquiridos durante la clase
 '''
 
-__author__ = "Inove Coding School"
-__email__ = "alumnos@inove.com.ar"
+__author__ = "Pedro Luis Lugo Garcia"
+__email__ = "pllugo@gmail.com"
 __version__ = "1.1"
+
+import csv
+import os
 
 import bonobo
 import time
@@ -27,18 +30,25 @@ import requests
 # Graphviz (dot) extension
 #    Abrir el archivo .dot y presionar CTRL + SHIF + V
 
+archivo = 'archivo.csv'
+
 
 def extract():
     # Realice un bucle que recorra una lista del 0 al 10 inclusive
     # En cada iteración de ese bucle realizar un "yield" del valor
     # tomado de la lista
-    yield 1
+    lista = list(range(0,11))
+    for i in range(len(lista)):
+        numero = lista[i]
+        print(numero)
+        yield numero
 
 
 def transform(x):
     # Por cada número que ingrese a transform
     # multiplicarlo por 5
-    yield 1
+    print(x)
+    yield 5*x
 
 
 def load(result):
@@ -48,10 +58,15 @@ def load(result):
     # o insertando a una base de datos a elección.
     # El objetivo es que quede almacenado en un archivo
     # o una base de datos la tabla del 5
-    print('Fin!')
+    with open(archivo, 'a', newline='') as fo:
+            fo.write(str(result))
+            fo.write("\n")
+
 
 
 def get_graph(**options):
+    if os.path.isfile(archivo) is True:
+        os.remove(archivo)
     graph = bonobo.Graph()
     graph.add_chain(extract, transform, load)
     return graph
